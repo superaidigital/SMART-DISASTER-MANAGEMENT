@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 0px; /* เปลี่ยนเป็น 80px หากต้องการเมนูแบบ Mini */
+    --primary-color: #2563eb;
+    --primary-dark: #1e40af;
+    --bg-color: #f8fafc;
+    --sidebar-bg: #0f172a;
+    --text-color: #334155;
+    --transition-speed: 0.3s;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+/* --- 1. Sidebar Styling --- */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--sidebar-bg);
+    color: white;
+    padding: 1.25rem;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), 
+                width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Sidebar Scrollbar */
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+.sidebar-header {
+    flex-shrink: 0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar-menu {
+    flex-grow: 1;
+}
+
+.nav-link {
+    color: #94a3b8;
+    padding: 0.8rem 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 0.4rem;
+    display: flex; 
+    align-items: center; 
+    gap: 0.75rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: white;
+    background-color: rgba(255,255,255,0.05);
+    transform: translateX(4px);
+}
+
+.nav-link.active {
+    color: white;
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* --- 2. Main Content & Navbar --- */
+.main-content {
+    transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+}
+
+.top-navbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.75rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* --- 3. Improved Toggle Button --- */
+#sidebarCollapse {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: var(--text-color);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+#sidebarCollapse:hover {
+    background: #f1f5f9;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* --- 4. Responsive & States --- */
+
+/* Desktop State: Collapsed */
+@media (min-width: 769px) {
+    .main-content { margin-left: var(--sidebar-width); }
+    
+    body.sidebar-collapsed .sidebar {
+        transform: translateX(-100%);
+    }
+    body.sidebar-collapsed .main-content {
+        margin-left: 0;
+    }
+}
+
+/* Mobile State */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    .sidebar.show {
+        transform: translateX(0);
+    }
+    .main-content {
+        margin-left: 0;
+    }
+    
+    /* Overlay */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(3px);
+        z-index: 1040;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+/* Utility Cards */
+.card-modern {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-modern:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
